@@ -6,13 +6,16 @@ extern		fread
 extern		fclose
 
 section		.data
-	fileName	db	"numeros2.dat",0
-	mode		db	"rb",0
-	fileHandle	dd	0
-	msgErrOpen	db  "Error en apertura de archivo",0,
-	msgLinea	db  "%d",10,0
-	msgLenLinea	db  "len vector: %d",10,0
-	lenFile		dw	0
+	
+	fileName		db	"numeros.dat",0
+	mode			db	"rb",0
+	fileHandle		dd	0
+	msgErrOpen		db  "Error en apertura de archivo",0,
+	
+	msgLine			db  "%d",10,0
+	
+	msgLenLine		db  "len vector: %d",10,0
+	lenFile			dw	0
 	
 section		.bss
 	registro resd	1
@@ -25,7 +28,7 @@ main:
 	call readBinaryFile
 
 	push dword[lenFile]
-	push msgLenLinea
+	push msgLenLine
 	call printf
 	add esp, 8
 
@@ -57,7 +60,7 @@ readLine:
 	jle		eof
 
 	push 	dword[registro]
-	push 	msgLinea
+	push 	msgLine
 	call 	printf
 	add 	esp, 8
 
