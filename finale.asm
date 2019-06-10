@@ -1,5 +1,5 @@
 ;*************************************************************************
-;					~ I N S E R T I O N   S O R T ~
+;				~	 I N S E R T I O N   S O R T		~
 ;*************************************************************************
 
 
@@ -25,9 +25,9 @@ section		.data
 	msgLine			db  "%d",10,0
 	
 	msgLenLine		db  "len vector: %d",10,0
-	lenFile			dw	0
+	lenVector		dd	0
 
-	lenRegister		dw	32
+	lenRegister		dd	32
 
 
 ;*************************************************************************
@@ -55,7 +55,8 @@ main:
 	mov 	dword[posVector], 1
 	call 	readBinaryFile
 
-	call 	insertion
+	mov 	dword[posVector], 1
+	call 	iterateVector
 
 	ret
 
@@ -88,7 +89,7 @@ readLine:
 
 	call 	fillVector
 
-	inc   	dword [lenFile]
+	inc   	dword[lenVector]
 
 	jmp		readLine
 
@@ -125,3 +126,22 @@ endReadBinaryFile:
 	ret
 
 ;_______________________________insertion___________________________________
+iterateVector:
+
+	mov		eax,dword[posVector]	;eax = posicion
+	dec		eax						;eax = posicion - 1
+	imul	dword[lenRegister]		;eax = (posicion - 1) * 10
+	lea		eax,[vector+eax]		;eax = dir nombre
+
+	push 	dword[eax]
+	push 	msgLine
+	call 	printf
+	add 	esp, 8
+
+	inc		dword[posVector]
+	mov     eax, dword[lenVector]
+	cmp		dword[posVector],eax
+	jle		iterateVector			
+
+	ret
+
