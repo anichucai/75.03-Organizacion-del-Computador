@@ -21,16 +21,25 @@ El método de ordenamiento por inserción es una manera muy natural de ordenar p
 Nota: no es correcto generar el archivo con un editor de textos de forma tal que cada registro sea una tira de 16 caracteres 1 y 0. Se aconseja el uso de un editor hexadecimal ( https://hexed.it/ ).
 
 
-__________________________________STEPS_______________________________________________
+__________________________________ ESQUEMA ______________________________________________
 
+MANEJO DE ARCHIVO
 - Manejo de archivo (abrir, cerrer y validar si existe)				OK
 - Leer archivo e imprimir por pantalla						OK
 - Averigiuar longitud de vector							OK
+
+VALIDACION
+- Validar numeros ingresados							NULL
+
+INSERCION
 - Almacenar contenido de archivo en vector					OK		
 - Recorrer vector e imprimir por pantalla					OK
-. Recorrer vector comparando de a dos elementos					ERROR
-- Swap de direccion de memoria							ERROR
-- Loop segundo x insercion							ERROR
-- Manejo de pantalla ( Ascendente o descendente + nombre de archivo)		ERROR
-- Validar numeros ingresados							ERROR
-- Mensajes									ERROR	
+- Recorrer de a dos elementos							OK
+- Comparar si  n1 menor n2							ERROR
+- Swap de direccion de memoria							OK
+- Loop segundo x insercion							NULL
+- Implementacion si ascendente o descendente					NULL
+
+MANEJO DE PANTALLA
+- Manejo de pantalla ( Ascendente o descendente + nombre de archivo)		NULL
+- Mensajes									NULL	
