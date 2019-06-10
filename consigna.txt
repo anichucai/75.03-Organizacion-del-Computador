@@ -23,8 +23,8 @@ Nota: no es correcto generar el archivo con un editor de textos de forma tal que
 
 __________________________________STEPS_______________________________________________
 
-- Manejo de archivo (abrir, cerrer y validar)					ERROR
-- Leer archivo e imprimir por pantalla						ERROR
+- Manejo de archivo (abrir, cerrer y validar)					OK
+- Leer archivo e imprimir por pantalla						OK
 - Almacenar contenido de archivo en vector					ERROR		
 - Averigiuar longitud de vector							ERROR
 - Recorrer vector y e imprimir por pantalla					ERROR	
