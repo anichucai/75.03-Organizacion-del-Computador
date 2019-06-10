@@ -26,9 +26,9 @@ __________________________________STEPS_________________________________________
 - Manejo de archivo (abrir, cerrer y validar)					OK
 - Leer archivo e imprimir por pantalla						OK
 - Averigiuar longitud de vector							OK
-- Almacenar contenido de archivo en vector					ERROR		
-- Recorrer vector y e imprimir por pantalla					ERROR	
-- Manejo de pantalla ( Ascendente o descendente + nombre de archivo)		ERROR
+- Almacenar contenido de archivo en vector					OK		
+- Recorrer vector y e imprimir por pantalla					OK	
 - Swap de direccion de memoria							ERROR
 - Insercion loop								ERROR
+- Manejo de pantalla ( Ascendente o descendente + nombre de archivo)		ERROR
 - Mensajes									ERROR	
