@@ -11,6 +11,8 @@ section		.data
 	fileHandle	dd	0
 	msgErrOpen	db  "Error en apertura de archivo",0,
 	msgLinea	db  "%d",10,0
+	msgLenLinea	db  "len vector: %d",10,0
+	lenFile		dw	0
 	
 section		.bss
 	registro resd	1
@@ -18,6 +20,20 @@ section		.bss
 section		.text
 
 main:
+	
+
+	call readBinaryFile
+
+	push dword[lenFile]
+	push msgLenLinea
+	call printf
+	add esp, 8
+
+	ret
+
+
+readBinaryFile:
+
 	push	mode			
 	push	fileName		
 	call	fopen		
@@ -29,15 +45,15 @@ main:
 	jle		errorOpen
 	mov		[fileHandle],eax
 
-read:
-	push	dword[fileHandle]	;Parametro 4: handle del archivo
-	push	1					;Parametro 3: cantidad de registros
+readLine:
+	push	dword[fileHandle]
+	push	1
 	push	4
-	push	registro			;Parametro 1: dir area de memoria donde se copia
-	call	fread				;LEO registro. Devuelve en eax la cantidad de bytes leidos
+	push	registro
+	call	fread
 	add		esp,16
 
-	cmp		eax,0				;Fin de archivo?
+	cmp		eax,0	
 	jle		eof
 
 	push 	dword[registro]
@@ -45,7 +61,9 @@ read:
 	call 	printf
 	add 	esp, 8
 
-	jmp		read
+	inc   	dword [lenFile]
+
+	jmp		readLine
 
 eof:
 	push	dword[fileHandle]
