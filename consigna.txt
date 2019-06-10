@@ -30,6 +30,7 @@ __________________________________STEPS_________________________________________
 - Recorrer vector e imprimir por pantalla					OK
 . Recorrer vector comparando de a dos elementos					ERROR
 - Swap de direccion de memoria							ERROR
+- Loop segundo x insercion							ERROR
 - Manejo de pantalla ( Ascendente o descendente + nombre de archivo)		ERROR
 - Validar numeros ingresados							ERROR
 - Mensajes									ERROR	
