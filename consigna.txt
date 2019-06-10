@@ -35,10 +35,10 @@ INSERCION
 - Almacenar contenido de archivo en vector					OK		
 - Recorrer vector e imprimir por pantalla					OK
 - Recorrer de a dos elementos							OK
-- Comparar si  n1 menor n2							ERROR
-- Swap de direccion de memoria							OK
-- Loop segundo x insercion							NULL
-- Implementacion si ascendente o descendente					NULL
+- Swap de direccion de memoria							ERROR
+- Implementacion comparacion ascendente o descendente				ERROR
+- Doble loop acortado e imprimir su posicion					NULL
+- Comparar dentro del doble loop y swapear 					NULL
 
 MANEJO DE PANTALLA
 - Manejo de pantalla ( Ascendente o descendente + nombre de archivo)		NULL
