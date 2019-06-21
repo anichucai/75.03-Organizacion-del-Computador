@@ -35,11 +35,11 @@ INSERCION
 - Almacenar contenido de archivo en vector					OK		
 - Recorrer vector e imprimir por pantalla					OK
 - Recorrer de a dos elementos							OK
-- Swap de direccion de memoria							ERROR
-- Implementacion comparacion ascendente o descendente				ERROR
-- Doble loop acortado e imprimir su posicion					NULL
-- Comparar dentro del doble loop y swapear 					NULL
+- Swap de direccion de memoria							OK
+- Implementacion comparacion ascendente o descendente				OK
+- Doble loop acortado e imprimir su posicion					OK
+- Comparar dentro del doble loop y swapear 					OK
 
 MANEJO DE PANTALLA
-- Manejo de pantalla ( Ascendente o descendente + nombre de archivo)		NULL
+- Manejo de pantalla ( Ascendente o descendente + nombre de archivo)		OK
 - Mensajes									NULL	
