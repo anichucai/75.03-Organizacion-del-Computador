@@ -9,6 +9,7 @@ extern		fopen
 extern		fwrite
 extern		fread
 extern		fclose
+extern 		gets
 
 
 ;*************************************************************************
@@ -17,7 +18,7 @@ extern		fclose
 
 section		.data
 
-	fileName		db	"numeros.dat",0
+	msgInputFile 	db 	"Ingrese nombre de archivo: ",0	
 	mode			db	"rb",0
 	fileHandle		dd	0
 	msgErrOpen		db  "Error en apertura de archivo",10,0,
@@ -31,11 +32,10 @@ section		.data
 
 	msgLuego 		db "Luego de iterar...",10,0
 
-	msgComparacion 	db "Comparo %d y %d",10,0
-
-	msgResultado	db "Resulta %d y %d",10,0
-
-	msgSwap			db "aux: %d",10,0
+	msgOrderMode 	db 	"Ingrese modo ordenamiento: Descendente [D] o Ascendente [A]: ",0
+	modeOrder 		dd 	" ",0
+	letterA 		dd 	"A",0
+	letterB 		dd  "D",0
 
 	
 
@@ -45,6 +45,8 @@ section		.data
 ;*************************************************************************
 	
 section		.bss
+
+	fileName				resb 	30
 
 	registro 				resd	1
 
@@ -65,6 +67,8 @@ section		.text
 ;_________________________________main_____________________________________
 
 main:
+
+	call   	inputData
 	
 	mov 	dword[posVector], 1
 	call 	readBinaryFile
@@ -81,6 +85,43 @@ main:
 	mov 	dword[posVector], 1
 	call 	printVector 
 
+	ret
+
+
+;_________________________________inputData__________________________________
+
+
+inputData:
+
+	inputFileName:
+
+	push msgInputFile
+	call printf
+	add esp, 4
+
+	push fileName
+	call gets
+	add esp, 4
+
+	inputOrderMode:
+
+	push msgOrderMode
+	call printf
+	add esp, 4
+
+	push modeOrder
+	call gets
+	add esp, 4
+
+	mov eax, dword[modeOrder]
+	cmp eax, dword[letterA]
+	je 	endInputData
+
+	mov eax, dword[modeOrder]
+	cmp eax, dword[letterB]
+	jne inputOrderMode
+
+	endInputData:
 	ret
 
 ;_____________________________readBinaryFile_______________________________
@@ -136,19 +177,23 @@ eof:
 	push	dword[fileHandle]
 	call	fclose
 	add		esp,4
-	jmp		endReadBinaryFile
+
+	jmp 	endReadBinaryFile
+
 	
 errorOpen:
 
 	push	msgErrOpen
 	call	printf
 	add		esp,4
+	jmp		main
+
 	
 endReadBinaryFile:
 
 	ret
 
-;_______________________________insertion___________________________________
+;___________________________insertionSort___________________________________
 
 
 insertionSort:
@@ -167,7 +212,7 @@ iterar_i:
 	
 	iterar_j:
 
-	; busco num2
+	buscoNum1:
 
 		mov		eax, dword[posVector]
 		add 	eax, esi
@@ -179,7 +224,7 @@ iterar_i:
 		mov 	dword[num2], edx
 
 
-	; busco num1
+	buscoNum2:
 
 		mov		eax,dword[posVector]
 		add 	eax, esi
@@ -191,17 +236,29 @@ iterar_i:
 		mov 	edx, dword[eax]
 		mov 	dword[num1], edx
 
+	isOrderCorrect:
 
+		mov eax, dword[modeOrder]
+		cmp eax, dword[letterA]
 
-
-	;resto num1-num2
 		mov 	eax, dword[num1]
 		mov 	ebx, dword[num2]
 
-		cmp 	eax, ebx
-		jle 	continue
+		je 	isOrderAscendent
+		jmp isOrderDescendent
+	
+	isOrderAscendent:
 
-	; si num1 mayor, imprimir
+		cmp 	eax, ebx
+		jmp 	swapOrder
+
+	isOrderDescendent:
+
+		cmp 	ebx, eax
+
+	swapOrder:
+
+		jle 	continue
 		call  	swap
 
 
