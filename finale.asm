@@ -21,7 +21,7 @@ section		.data
 	msgInputFile 			db 	10,"Ingrese nombre de archivo: ",0	
 	mode					db	"rb",0
 	fileHandle				dd	0
-	msgErrOpen				db  "Error en apertura de archivo",10,0,
+	msgErrOpen				db  10,"Error en apertura de archivo",10,0,
 	
 	msgLine					db  " %d ",0
 	
@@ -30,12 +30,10 @@ section		.data
 
 	lenRegister				dd	33
 
-	msgLuego 				db "Luego de iterar...",10,0
-
 	msgOrderMode 			db 	10,"Ingrese modo ordenamiento: Descendente [D] o Ascendente [A]: ",0
-	modeOrder 				dd 	" ",0
-	letterA 				dd 	"A",0
-	letterB 				dd  "D",0
+	modeOrder 				db 	" ",0
+	letterA 				db 	"A",0
+	letterB 				db  "D",0
 
 
 	msgColocarVector	 	db 10,"Se coloca los siguientes numeros en un vector: ",10,0
@@ -49,6 +47,7 @@ section		.data
 	msgContinue				db "							Numeros ordenados continuo.",10,0
 	msgEndInsertionSort 	db 10, "**************************************************************************************",10,"				FIN INSERTION SORT 	 				",10, "**************************************************************************************",10, 10,"RESULTADO: ",10,0
 	msgSaltoDeLinea 		db 10,10,0
+	msgArchivoVacio 		db "Archivo vacio",10,0
 
 
 	
@@ -87,19 +86,24 @@ main:
 	mov 	dword[posVector], 1
 	call 	readBinaryFile
 
+
+
 	call 	printInitialization
 
 	call 	insertionSort
-
-	ret
-
+		
+	ret	
 
 ;_________________________________inputData__________________________________
 
 
 inputData:
 
-	inputFileName:
+	call inputFileName
+	call inputOrderMode
+	ret
+
+inputFileName:
 
 	push msgInputFile
 	call printf
@@ -108,8 +112,10 @@ inputData:
 	push fileName
 	call gets
 	add esp, 4
-
-	inputOrderMode:
+	
+	ret
+	
+inputOrderMode:
 
 	push msgOrderMode
 	call printf
@@ -119,15 +125,15 @@ inputData:
 	call gets
 	add esp, 4
 
-	mov eax, dword[modeOrder]
-	cmp eax, dword[letterA]
-	je 	endInputData
+	mov ah, byte[modeOrder]
+	cmp ah, byte[letterA]
+	je 	endInputOrderMode
 
-	mov eax, dword[modeOrder]
-	cmp eax, dword[letterB]
+	mov ah, byte[modeOrder]
+	cmp ah, byte[letterB]
 	jne inputOrderMode
 
-	endInputData:
+endInputOrderMode:
 	ret
 
 ;_____________________________readBinaryFile_______________________________
@@ -184,7 +190,7 @@ eof:
 	call	fclose
 	add		esp,4
 
-	jmp 	endReadBinaryFile
+	ret
 
 	
 errorOpen:
@@ -192,8 +198,9 @@ errorOpen:
 	push	msgErrOpen
 	call	printf
 	add		esp,4
-	jmp		main
 
+	call 	inputData
+	jmp 	readBinaryFile
 	
 endReadBinaryFile:
 
@@ -202,9 +209,18 @@ endReadBinaryFile:
 ;___________________________insertionSort___________________________________
 
 
+
+
 insertionSort:
 
+	cmp 	dword[lenVector], 0
+	je 		printfArchivoVacio
+
 	call 	printInsercionTitulo
+
+	cmp 	dword[lenVector], 1
+	je 		endInsertionSort
+
 	call 	printEntrarCiclo_i
 
 	mov 	dword[posVector], 1
@@ -435,6 +451,7 @@ printEndInsertionSort:
 	call 		printf
 	add 		esp, 4
 
+	mov 		dword[posVector], 1
 	call 		printVector
 
 	push 		msgSaltoDeLinea
@@ -442,4 +459,12 @@ printEndInsertionSort:
 	add 		esp, 4
 
 
+	ret
+
+printfArchivoVacio:
+
+	push 		msgArchivoVacio
+	call 		printf
+	add 		esp, 4
+	
 	ret
