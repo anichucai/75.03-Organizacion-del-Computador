@@ -29,7 +29,7 @@ MANEJO DE ARCHIVO
 - Averigiuar longitud de vector							OK
 
 VALIDACION
-- Validar numeros ingresados							OK
+- Validar numeros ingresados							NULL
 
 INSERCION
 - Almacenar contenido de archivo en vector					OK		
@@ -42,4 +42,4 @@ INSERCION
 
 MANEJO DE PANTALLA
 - Manejo de pantalla ( Ascendente o descendente + nombre de archivo)		OK
-- Mensajes									NULL	
+- Mensajes									OK	
