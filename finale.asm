@@ -18,24 +18,38 @@ extern 		gets
 
 section		.data
 
-	msgInputFile 	db 	"Ingrese nombre de archivo: ",0	
-	mode			db	"rb",0
-	fileHandle		dd	0
-	msgErrOpen		db  "Error en apertura de archivo",10,0,
+	msgInputFile 			db 	10,"Ingrese nombre de archivo: ",0	
+	mode					db	"rb",0
+	fileHandle				dd	0
+	msgErrOpen				db  "Error en apertura de archivo",10,0,
 	
-	msgLine			db  "%d",10,0
+	msgLine					db  " %d ",0
 	
-	msgLenLine		db  "len vector: %d",10,0
-	lenVector		dd	0
+	msgLenLine				db  10,"len vector: %d",10,0
+	lenVector				dd	0
 
-	lenRegister		dd	33
+	lenRegister				dd	33
 
-	msgLuego 		db "Luego de iterar...",10,0
+	msgLuego 				db "Luego de iterar...",10,0
 
-	msgOrderMode 	db 	"Ingrese modo ordenamiento: Descendente [D] o Ascendente [A]: ",0
-	modeOrder 		dd 	" ",0
-	letterA 		dd 	"A",0
-	letterB 		dd  "D",0
+	msgOrderMode 			db 	10,"Ingrese modo ordenamiento: Descendente [D] o Ascendente [A]: ",0
+	modeOrder 				dd 	" ",0
+	letterA 				dd 	"A",0
+	letterB 				dd  "D",0
+
+
+	msgColocarVector	 	db 10,"Se coloca los siguientes numeros en un vector: ",10,0
+	msgAveriguarLen 		db 10,10,"Se obtiene longitud del vector n: %d",10,0
+	msgInsercionTitulo 		db 10, "**************************************************************************************",10,"               ~	 I N S E R T I O N   S O R T	 ~               ",10,"**************************************************************************************",10,10,0
+	msgSeEntraEnCiclo_i 	db "	Iniciando el ciclo i menor a n=%d.",10,0
+	msgSeEntraEnCiclo_j 	db "		Iniciando el ciclo j menor al i=%d.",10,0
+	msgEnCiclo_j 		 	db "			 Si j=%d menor al i=%d.",10,0
+	msgComparacion 			db "					Se comparan los numeron %d y %d.",10,0
+	msgSwap 				db "							Numeros desordenados",10,"								swap de posiciones.",10,0
+	msgContinue				db "							Numeros ordenados continuo.",10,0
+	msgEndInsertionSort 	db 10, "**************************************************************************************",10,"				FIN INSERTION SORT 	 				",10, "**************************************************************************************",10, 10,"RESULTADO: ",10,0
+	msgSaltoDeLinea 		db 10,10,0
+
 
 	
 
@@ -73,17 +87,9 @@ main:
 	mov 	dword[posVector], 1
 	call 	readBinaryFile
 
-	mov 	dword[posVector], 1
-	call 	printVector 
+	call 	printInitialization
 
 	call 	insertionSort
-
-	push	msgLuego
-	call 	printf
-	add 	esp, 4
-
-	mov 	dword[posVector], 1
-	call 	printVector 
 
 	ret
 
@@ -198,6 +204,9 @@ endReadBinaryFile:
 
 insertionSort:
 
+	call 	printInsercionTitulo
+	call 	printEntrarCiclo_i
+
 	mov 	dword[posVector], 1
 	mov 	esi, 1
 
@@ -207,10 +216,14 @@ iterar_i:
 	cmp 	esi, dword[lenVector]
 	jge 	endInsertionSort
 
+	mov 	edi, esi
 	push 	esi
 
+	call 	printEntrarCiclo_j
 	
 	iterar_j:
+
+		call 	printEnCiclo_j
 
 	buscoNum1:
 
@@ -238,14 +251,16 @@ iterar_i:
 
 	isOrderCorrect:
 
-		mov eax, dword[modeOrder]
-		cmp eax, dword[letterA]
+		call 	printComparar
+
+		mov 	eax, dword[modeOrder]
+		cmp 	eax, dword[letterA]
 
 		mov 	eax, dword[num1]
 		mov 	ebx, dword[num2]
 
-		je 	isOrderAscendent
-		jmp isOrderDescendent
+		je 		isOrderAscendent
+		jmp 	isOrderDescendent
 	
 	isOrderAscendent:
 
@@ -259,11 +274,14 @@ iterar_i:
 	swapOrder:
 
 		jle 	continue
+
+		call 	pritnSwap
 		call  	swap
 
 
 	continue:
 
+		call 	printContinue
 
 		dec		esi
 		cmp 	esi, 0
@@ -271,9 +289,12 @@ iterar_i:
 
 		pop 	esi
 		inc 	esi
-		jmp 	iterar_i			
+		jmp 	iterar_i	
 
 endInsertionSort:
+
+	call 	printEndInsertionSort
+
 	ret
 
 
@@ -309,6 +330,7 @@ swap:
 	ret
 
 
+;___________________________printMessages___________________________________
 
 printVector:
 
@@ -326,5 +348,98 @@ printVector:
 	mov     eax, dword[lenVector]
 	cmp		dword[posVector],eax
 	jle		printVector			
+
+	ret
+
+printInitialization:
+
+	push 	msgColocarVector
+	call 	printf
+	add 	esp, 4
+
+	mov 	dword[posVector], 1
+	call 	printVector 
+
+	push 	dword[lenVector]
+	push 	msgAveriguarLen
+	call 	printf
+	add 	esp, 8
+
+	ret
+
+printInsercionTitulo:
+
+	push 	msgInsercionTitulo
+	call 	printf
+	add 	esp, 4
+
+	ret
+
+printEntrarCiclo_i:
+
+	push 		dword[lenVector]
+	push 		esi
+	push 		msgSeEntraEnCiclo_i
+	call 		printf
+	add 		esp, 12
+
+	ret
+
+printEntrarCiclo_j:
+	
+	push 		esi
+	push 		edi
+	push 		msgSeEntraEnCiclo_j
+	call 		printf
+	add 		esp, 12
+
+	ret
+
+printEnCiclo_j:
+	
+	push 		edi
+	push 		esi
+	push 		msgEnCiclo_j
+	call 		printf
+	add 		esp, 12
+
+	ret
+
+printComparar:
+
+	push 		dword[num2]
+	push 		dword[num1]
+	push 		msgComparacion
+	call 		printf
+	add 		esp, 12
+	
+pritnSwap:
+
+	push 		msgSwap
+	call 		printf
+	add 		esp, 4
+
+	ret
+
+printContinue:
+
+	push 		msgContinue
+	call 		printf
+	add 		esp, 4
+
+	ret
+
+printEndInsertionSort:
+	
+	push 		msgEndInsertionSort
+	call 		printf
+	add 		esp, 4
+
+	call 		printVector
+
+	push 		msgSaltoDeLinea
+	call 		printf
+	add 		esp, 4
+
 
 	ret
