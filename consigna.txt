@@ -29,7 +29,7 @@ MANEJO DE ARCHIVO
 - Averigiuar longitud de vector							OK
 
 VALIDACION
-- Validar numeros ingresados							NULL
+- Validar numeros ingresados							OK
 
 INSERCION
 - Almacenar contenido de archivo en vector					OK		
