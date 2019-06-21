@@ -27,9 +27,18 @@ section		.data
 	msgLenLine		db  "len vector: %d",10,0
 	lenVector		dd	0
 
-	lenRegister		dd	32
+	lenRegister		dd	33
 
 	msgLuego 		db "Luego de iterar...",10,0
+
+	msgComparacion 	db "Comparo %d y %d",10,0
+
+	msgResultado	db "Resulta %d y %d",10,0
+
+	msgSwap			db "aux: %d",10,0
+
+	
+
 
 ;*************************************************************************
 ;							SECTION .BSS
@@ -63,8 +72,7 @@ main:
 	mov 	dword[posVector], 1
 	call 	printVector 
 
-	mov 	dword[posVector], 2
-	call 	iterateVector
+	call 	insertionSort
 
 	push	msgLuego
 	call 	printf
@@ -141,59 +149,87 @@ endReadBinaryFile:
 	ret
 
 ;_______________________________insertion___________________________________
-iterateVector:
-
-; busco num2
-
-	mov		eax,dword[posVector]
-	dec		eax		
-	imul	dword[lenRegister]		
-	lea		eax,[vector+eax]
-
-	mov 	eax, dword[eax]
-	mov 	dword[num2], eax
-
-; busco num1
-
-	mov		eax,dword[posVector]
-	dec		eax
-	dec		eax				
-	imul	dword[lenRegister]		
-	lea		eax,[vector+eax]
-
-	mov 	eax, dword[eax]
-	mov 	dword[num1], eax
-
-;resto num1-num2
-	mov 	eax, [num1]
-	mov 	ebx, [num2]
-	sub 	eax, ebx
-
-; num1<num2?
-	cmp 	eax, 0
-	jle 	continue
-
-; si num1 mayor, imprimir
-	call  	swap
 
 
-continue:
+insertionSort:
 
-	inc		dword[posVector]
-	mov     eax, dword[lenVector]
-	cmp		dword[posVector],eax
-	jle		iterateVector			
+	mov 	dword[posVector], 1
+	mov 	esi, 1
 
+iterar_i:
+	
+
+	cmp 	esi, dword[lenVector]
+	jge 	endInsertionSort
+
+	push 	esi
+
+	
+	iterar_j:
+
+	; busco num2
+
+		mov		eax, dword[posVector]
+		add 	eax, esi
+		dec		eax
+		imul	dword[lenRegister]		
+		lea		eax,[vector+eax]
+
+		mov 	edx, dword[eax]
+		mov 	dword[num2], edx
+
+
+	; busco num1
+
+		mov		eax,dword[posVector]
+		add 	eax, esi
+		dec		eax
+		dec		eax
+		imul	dword[lenRegister]	
+		lea		eax,[vector+eax]
+
+		mov 	edx, dword[eax]
+		mov 	dword[num1], edx
+
+
+
+
+	;resto num1-num2
+		mov 	eax, dword[num1]
+		mov 	ebx, dword[num2]
+
+		cmp 	eax, ebx
+		jle 	continue
+
+	; si num1 mayor, imprimir
+		call  	swap
+
+
+	continue:
+
+
+		dec		esi
+		cmp 	esi, 0
+		jg		iterar_j
+
+		pop 	esi
+		inc 	esi
+		jmp 	iterar_i			
+
+endInsertionSort:
 	ret
+
 
 swap:
 
 ; guardo en aux
-	mov eax, dword[num2]
-	mov dword[aux], eax
+	mov 	eax, dword[num2]
+	mov 	dword[aux], eax
 
 ; busco num2
+
 	mov		eax,dword[posVector]
+	add 	eax, esi
 	dec		eax		
 	imul	dword[lenRegister]		
 	lea		eax,[vector+eax]
@@ -204,6 +240,7 @@ swap:
 ; busco num1
 
 	mov		eax,dword[posVector]
+	add 	eax, esi
 	dec		eax
 	dec		eax				
 	imul	dword[lenRegister]		
@@ -214,12 +251,14 @@ swap:
 
 	ret
 
+
+
 printVector:
 
-	mov		eax,dword[posVector]	;eax = posicion
-	dec		eax						;eax = posicion - 1
-	imul	dword[lenRegister]		;eax = (posicion - 1) * 10
-	lea		eax,[vector+eax]		;eax = dir nombre
+	mov		eax,dword[posVector]	
+	dec		eax						
+	imul	dword[lenRegister]		
+	lea		eax,[vector+eax]		
 
 	push 	dword[eax]
 	push 	msgLine
@@ -232,5 +271,3 @@ printVector:
 	jle		printVector			
 
 	ret
-
-
