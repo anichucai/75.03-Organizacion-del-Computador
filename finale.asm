@@ -269,8 +269,8 @@ iterar_i:
 
 		call 	printComparar
 
-		mov 	eax, dword[modeOrder]
-		cmp 	eax, dword[letterA]
+		mov 	ah, byte[modeOrder]
+		cmp 	ah, byte[letterA]
 
 		mov 	eax, dword[num1]
 		mov 	ebx, dword[num2]
@@ -393,8 +393,8 @@ printInsercionTitulo:
 
 printEntrarCiclo_i:
 
-	push 		dword[lenVector]
 	push 		esi
+	push 		dword[lenVector]
 	push 		msgSeEntraEnCiclo_i
 	call 		printf
 	add 		esp, 12
@@ -428,6 +428,8 @@ printComparar:
 	push 		msgComparacion
 	call 		printf
 	add 		esp, 12
+
+	ret
 	
 pritnSwap:
 
